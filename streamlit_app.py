@@ -2,30 +2,6 @@ import streamlit as st
 import numpy as np
 import time
 
-# 自定义 CSS 样式，实现按钮和结果文本居中、加粗和加大
-st.markdown(
-    """
-    <style>
-    .center-container {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
-    }
-    .center-button button {
-        font-size: 24px;
-        font-weight: bold;
-        padding: 10px 20px;
-    }
-    .result-text {
-        font-size: 24px;
-        font-weight: bold;
-        margin-top: 20px;
-    }
-    </style>
-    """, unsafe_allow_html=True
-)
-
 # 吃饭备选餐厅映射
 restaurant_mapping = {
     1: '妈子面',
@@ -42,29 +18,31 @@ restaurant_mapping = {
     12: 'fruit楼上那家'
 }
 
-# 初始化点击次数，存储在 session_state 中
-if "click_count" not in st.session_state:
+# 页面顶端居中显示大标题
+st.markdown("<h1 style='text-align:center;'>他妈的我们吃什么！</h1>", unsafe_allow_html=True)
+
+# 初始化按钮点击计数器
+if 'click_count' not in st.session_state:
     st.session_state.click_count = 0
 
-# 居中显示“开始”按钮
-with st.container():
-    st.markdown("<div class='center-container'>", unsafe_allow_html=True)
-    button_clicked = st.button("开始")
-    st.markdown("</div>", unsafe_allow_html=True)
+# 使用三列布局将按钮放置在屏幕中间，按钮加粗加大
+col1, col2, col3 = st.columns([1, 1, 1])
+with col2:
+    button_clicked = st.button("<strong><span style='font-size:20px;'>开始</span></strong>", key="start_button", unsafe_allow_html=True)
 
-# 判断点击次数
+#当按钮被点击时执行逻辑
 if button_clicked:
     st.session_state.click_count += 1
-
-if st.session_state.click_count > 3:
-    # 超过3次点击则显示提示文本，不允许再执行
-    st.markdown("<div class='center-container'><span class='result-text'>吃个锤子吃，你特么就是不饿</span></div>", unsafe_allow_html=True)
-elif button_clicked:
-    # 点击后显示 spinner，延时3秒后出现结果，并触发气球特效
-    with st.spinner("爸爸帮你想~爸爸帮你挑~"):
-        time.sleep(3)
-    num_restaurants = len(restaurant_mapping)
-    random_number = np.random.randint(1, num_restaurants + 1)
-    selected_restaurant = restaurant_mapping[random_number]
-    st.markdown(f"<div class='center-container'><span class='result-text'>{selected_restaurant}</span></div>", unsafe_allow_html=True)
-    st.balloons()
+    if st.session_state.click_count > 3:
+        st.markdown("<p style='text-align:center;font-size:18px;'><strong>吃个锤子吃，你特么就是不饿</strong></p>", unsafe_allow_html=True)
+    else:
+        # 延时3秒并显示自定义spinner
+        with st.spinner("爸爸帮你想~爸爸帮你挑~"):
+            time.sleep(3)
+        # 随机选择一个餐厅
+        num_restaurants = len(restaurant_mapping)
+        random_number = np.random.randint(1, num_restaurants + 1)
+        selected_restaurant = restaurant_mapping[random_number]
+        # 将结果输出在“开始”按钮下，结果加粗加大并置中显示
+        st.markdown(f"<p style='text-align:center;font-size:24px;'><strong>{selected_restaurant}</strong></p>", unsafe_allow_html=True)
+        st.balloons()
