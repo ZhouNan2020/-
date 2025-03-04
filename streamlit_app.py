@@ -2,6 +2,25 @@ import streamlit as st
 import numpy as np
 import time
 
+# 初始化按钮点击计数
+if 'button_count' not in st.session_state:
+    st.session_state.button_count = 0
+
+# 屏幕顶端居中显示大标题
+st.markdown("<h1 style='text-align: center;'>他妈的我们吃什么！</h1>", unsafe_allow_html=True)
+
+# 向页面注入 CSS 调整按钮样式（大尺寸、加粗）
+st.markdown("""
+    <style>
+    div.stButton > button {
+        width: 300px;
+        height: 80px;
+        font-size: 24px;
+        font-weight: bold;
+    }
+    </style>
+    """, unsafe_allow_html=True)
+
 # 吃饭备选餐厅映射
 restaurant_mapping = {
     1: '妈子面',
@@ -18,31 +37,21 @@ restaurant_mapping = {
     12: 'fruit楼上那家'
 }
 
-# 页面顶端居中显示大标题
-st.markdown("<h1 style='text-align:center;'>他妈的我们吃什么！</h1>", unsafe_allow_html=True)
-
-# 初始化按钮点击计数器
-if 'click_count' not in st.session_state:
-    st.session_state.click_count = 0
-
-# 使用三列布局将按钮放置在屏幕中间，按钮加粗加大
-col1, col2, col3 = st.columns([1, 1, 1])
-with col2:
-    button_clicked = st.button("<strong><span style='font-size:20px;'>开始</span></strong>", key="start_button", unsafe_allow_html=True)
-
-#当按钮被点击时执行逻辑
-if button_clicked:
-    st.session_state.click_count += 1
-    if st.session_state.click_count > 3:
-        st.markdown("<p style='text-align:center;font-size:18px;'><strong>吃个锤子吃，你特么就是不饿</strong></p>", unsafe_allow_html=True)
-    else:
-        # 延时3秒并显示自定义spinner
+# 判断点击次数是否超过3次
+if st.session_state.button_count >= 3:
+    st.markdown("<h2 style='text-align: center;'>吃个锤子吃，你特么就是不饿</h2>", unsafe_allow_html=True)
+else:
+    # 利用 st.columns 居中放置按钮
+    col1, col2, col3 = st.columns([1, 2, 1])
+    with col2:
+        button_clicked = st.button("开始")
+    if button_clicked:
+        st.session_state.button_count += 1
         with st.spinner("爸爸帮你想~爸爸帮你挑~"):
             time.sleep(3)
-        # 随机选择一个餐厅
         num_restaurants = len(restaurant_mapping)
         random_number = np.random.randint(1, num_restaurants + 1)
         selected_restaurant = restaurant_mapping[random_number]
-        # 将结果输出在“开始”按钮下，结果加粗加大并置中显示
-        st.markdown(f"<p style='text-align:center;font-size:24px;'><strong>{selected_restaurant}</strong></p>", unsafe_allow_html=True)
+        # 输出结果置中，加粗加大
+        st.markdown(f"<h2 style='text-align: center; font-weight: bold; font-size: 24px;'>{selected_restaurant}</h2>", unsafe_allow_html=True)
         st.balloons()
