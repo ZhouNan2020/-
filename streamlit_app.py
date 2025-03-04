@@ -47,7 +47,7 @@ else:
         button_clicked = st.button("开始")
     if button_clicked:
         st.session_state.button_count += 1
-        with st.spinner("爸爸帮你想~~爸爸帮你挑~~"):
+        with st.spinner("爸爸帮你想，爸爸帮你挑~"):
             time.sleep(3)
         num_restaurants = len(restaurant_mapping)
         random_number = np.random.randint(1, num_restaurants + 1)
