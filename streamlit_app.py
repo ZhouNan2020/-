@@ -39,7 +39,7 @@ restaurant_mapping = {
 
 # 判断点击次数是否超过3次
 if st.session_state.button_count >= 3:
-    st.markdown("<h2 style='text-align: center;'>吃个锤子吃，你特么就是不饿</h2>", unsafe_allow_html=True)
+    st.markdown("<h2 style='text-align: center;'>吃个锤子吃，你狗东西就是不饿</h2>", unsafe_allow_html=True)
 else:
     # 利用 st.columns 居中放置按钮
     col1, col2, col3 = st.columns([1, 2, 1])
@@ -47,11 +47,11 @@ else:
         button_clicked = st.button("开始")
     if button_clicked:
         st.session_state.button_count += 1
-        with st.spinner("爸爸帮你想~爸爸帮你挑~"):
+        with st.spinner("爸爸帮你想~~爸爸帮你挑~~"):
             time.sleep(3)
         num_restaurants = len(restaurant_mapping)
         random_number = np.random.randint(1, num_restaurants + 1)
         selected_restaurant = restaurant_mapping[random_number]
         # 输出结果置中，加粗加大
-        st.markdown(f"<h2 style='text-align: center; font-weight: bold; font-size: 24px;'>{selected_restaurant}</h2>", unsafe_allow_html=True)
+        st.markdown(f"<h2 style='text-align: center; font-weight: bold; font-size: 32px;'>{selected_restaurant}</h2>", unsafe_allow_html=True)
         st.balloons()
