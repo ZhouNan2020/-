@@ -8,7 +8,7 @@ if 'button_count' not in st.session_state:
 
 # 屏幕顶端居中显示大标题
 st.markdown("<h1 style='text-align: center;'>他妈的我们吃什么！</h1>", unsafe_allow_html=True)
-
+st.markdown("<h2 style='text-align: center;'>吃主食是陋习！</h2>", unsafe_allow_html=True)
 # 向页面注入 CSS 调整按钮样式（大尺寸、加粗）
 st.markdown("""
     <style>
